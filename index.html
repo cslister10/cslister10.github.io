@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Major filter</title>
+</head>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<body>
+<div class ='container'>
+	<h2> Select a major</h2>
+	<button type='button' class="btn btn-primary" onClick="getData('CIT')">CIT</button>
+	<button type='button' class="btn btn-primary" onClick="getData('BUS')">BUS</button>
+</div>
+<div id="majorTable"></div>
+</body>
+<script type="text/x-handlebars-template" id="tableTemplate">
+	<table class="table table-striped">
+		<tr><th>Name</th><th>Major</th><th>Midterm</th><th>Final</th></tr>
+			{{#each rows}}
+				<tr>
+					<td>{{Name}}</td><td>{{Major}}</td><td>Midterm</td><td>Final</td>
+				</tr>
+			{{/each}}
+	</table
+</script>
+
+<script>
+	function getData(selected_major){
+		var request = new XMLHttpRequest();
+		request.open('GET', 'cit5students.json');
+
+		request.onload = function(){
+			var data = JSON.parse(request.responseText);
+
+			major_select = data.filter(getMajor)
+			function getMajor(study){
+				return study.major == selected_major;
+			}
+
+			if (request.status == 200){
+				var templateText = document.getElementById('tableTemplate').innerHTML;
+				var compiledTemplateText = Handlebars.compile(templateText);
+				compiledHtml = compiledTemplateText({rows: major_select})
+				document.getElementById('majorTable').innerHTML = compiledHtml;
+			}
+			else{
+				document.getElementById('majorTable').innerHTML = "There was an error"
+			}
+		}
+		request.send(null);
+	}
+
+</script>
+</html>
