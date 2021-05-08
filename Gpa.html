@@ -10,7 +10,7 @@
 
 </style>
 </head>
-<body ng-app="GPaApp">
+<body ng-app = "GPaApp">
 <div class="container">
 
 <nav class="navbar navbar-inverse">
@@ -49,6 +49,8 @@
 		$http.get("students.json")
 		.then(function(response){
 			$scope.students = response.data;
-		})
-	})
+		});
+	});
 </script>
+</body>
+</html>
